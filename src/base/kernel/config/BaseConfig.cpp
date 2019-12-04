@@ -131,6 +131,9 @@ bool xmrig::BaseConfig::read(const IJsonReader &reader, const char *fileName)
     m_userAgent    = reader.getString("user-agent");
     m_version      = reader.getUint("version");
 
+    m_rebenchAlgo   = reader.getBool("rebench-algo", m_rebenchAlgo);
+    m_benchAlgoTime = reader.getInt("bench-algo-time", m_benchAlgoTime);
+
     setPrintTime(reader.getUint("print-time", 60));
 
     const rapidjson::Value &api = reader.getObject("api");

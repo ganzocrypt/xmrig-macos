@@ -79,6 +79,9 @@ public:
         NicehashKey          = 1006,
         PrintTimeKey         = 1007,
 
+        RebenchAlgoKey       = 10001,
+        BenchAlgoTimeKey     = 10002,
+
         // xmrig cpu
         CPUKey               = 1024,
         AVKey                = 'v',
