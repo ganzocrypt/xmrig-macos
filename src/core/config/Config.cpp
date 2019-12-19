@@ -168,7 +168,7 @@ bool xmrig::Config::isShouldSave() const
     }
 #   endif
 
-    return (m_upgrade || cpu().isShouldSave());
+    return (m_upgrade || cpu().isShouldSave() || m_benchmark.isNewBenchRun());
 }
 
 
@@ -179,6 +179,7 @@ bool xmrig::Config::read(const IJsonReader &reader, const char *fileName)
     }
 
     d_ptr->cpu.read(reader.getValue(kCPU));
+    m_benchmark.read(reader.getValue("algo-perf"));
 
 #   ifdef XMRIG_ALGO_RANDOMX
     if (!d_ptr->rx.read(reader.getValue(kRandomX))) {
@@ -248,4 +249,8 @@ void xmrig::Config::getJSON(rapidjson::Document &doc) const
     doc.AddMember("user-agent",                 m_userAgent.toJSON(), allocator);
     doc.AddMember("verbose",                    Log::verbose(), allocator);
     doc.AddMember("watch",                      m_watch, allocator);
+
+    doc.AddMember("rebench-algo",               isRebenchAlgo(), allocator);
+    doc.AddMember("bench-algo-time",            benchAlgoTime(), allocator);
+    doc.AddMember("algo-perf",                  m_benchmark.toJSON(doc), allocator);
 }

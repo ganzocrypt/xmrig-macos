@@ -88,6 +88,8 @@ static const option options[] = {
     { "cpu-memory-pool",       1, nullptr, IConfig::MemoryPoolKey         },
     { "cpu-no-yield",          0, nullptr, IConfig::YieldKey              },
     { "verbose",               0, nullptr, IConfig::VerboseKey            },
+    { "rebench-algo",          0, nullptr, IConfig::RebenchAlgoKey        },
+    { "bench-algo-time",       1, nullptr, IConfig::BenchAlgoTimeKey      },
 #   ifdef XMRIG_FEATURE_TLS
     { "tls",                   0, nullptr, IConfig::TlsKey                },
     { "tls-fingerprint",       1, nullptr, IConfig::FingerprintKey        },

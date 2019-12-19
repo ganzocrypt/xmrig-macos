@@ -32,6 +32,7 @@
 #include "backend/cpu/CpuConfig.h"
 #include "base/kernel/config/BaseConfig.h"
 #include "base/tools/Object.h"
+#include "core/Benchmark.h"
 #include "rapidjson/fwd.h"
 
 
@@ -58,6 +59,7 @@ public:
 #   ifdef XMRIG_FEATURE_OPENCL
     const OclConfig &cl() const;
 #   endif
+    inline Benchmark &benchmark()           { return m_benchmark; }
 
 #   ifdef XMRIG_FEATURE_CUDA
     const CudaConfig &cuda() const;
@@ -77,6 +79,7 @@ public:
 
 private:
     ConfigPrivate *d_ptr;
+    Benchmark m_benchmark;
 };
 
 
