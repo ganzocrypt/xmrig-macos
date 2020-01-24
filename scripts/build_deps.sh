@@ -8,7 +8,8 @@ mkdir deps
 mkdir deps/include
 mkdir deps/lib
 
-mkdir build && cd build
+mkdir build || true
+cd build
 
 wget https://github.com/libuv/libuv/archive/v${UV_VERSION}.tar.gz
 tar -xzf v${UV_VERSION}.tar.gz

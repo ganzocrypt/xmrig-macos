@@ -124,8 +124,16 @@ void xmrig::BaseConfig::printVersions()
 {
     char buf[256] = { 0 };
 
+#if defined(__INTEL_COMPILER)
+#define __INTELC__            ((__INTEL_COMPILER / 100) >> 0)
+#define __INTELC_MINOR__      (((__INTEL_COMPILER - (__INTELC__ * 100)) / 10) >> 0)
+#define __INTELC_PATCHLEVEL__ (__INTEL_COMPILER - (__INTELC__ * 100) - (__INTELC_MINOR__ * 10))
+#endif
+
 #   if defined(__clang__)
     snprintf(buf, sizeof buf, "clang/%d.%d.%d", __clang_major__, __clang_minor__, __clang_patchlevel__);
+#   elif defined(__INTELC__)
+    snprintf(buf, sizeof buf, "icc/%d.%d.%d.%d (gcc/%d.%d.%d)", __INTELC__, __INTELC_MINOR__, __INTELC_PATCHLEVEL__, __INTEL_COMPILER_BUILD_DATE, __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #   elif defined(__GNUC__)
     snprintf(buf, sizeof buf, "gcc/%d.%d.%d", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #   elif defined(_MSC_VER)

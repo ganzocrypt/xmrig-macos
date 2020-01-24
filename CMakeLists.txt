@@ -200,7 +200,7 @@ include_directories(src/3rdparty)
 include_directories(${UV_INCLUDE_DIR})
 
 if (BUILD_STATIC)
-    set(CMAKE_EXE_LINKER_FLAGS " -static")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 endif()
 
 if (WITH_DEBUG_LOG)
