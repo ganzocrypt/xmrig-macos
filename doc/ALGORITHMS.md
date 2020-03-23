@@ -12,9 +12,10 @@ Option `coin` useful for pools without algorithm negotiation support or daemon t
 
 | Name | Memory | Version | Notes |
 |------|--------|---------|-------|
+| `rx/keva` | 1 MB | 5.9.0+ | RandomKEVA (RandomX variant for Keva). |
 | `rx/sfx` | 2 MB | 5.4.0+ | RandomSFX (RandomX variant for Safex). |
-| `rx/v` | 2 MB | 5.4.0+ | RandomV (RandomX variant for new MoneroV). |
 | `rx/arq` | 256 KB | 4.3.0+ | RandomARQ (RandomX variant for ArQmA). |
+| `defyx` | 1 MB | 4.0.0-mo1+ | DefyX (RandomX variant for Scala). NOTE: Only available in MoneroOcean fork |
 | `rx/0` | 2 MB | 3.2.0+ | RandomX (Monero). |
 | `argon2/chukwa` | 512 KB | 3.1.0+ | Argon2id (Chukwa). |
 | `argon2/wrkz` | 256 KB | 3.1.0+ | Argon2id (WRKZ) |
