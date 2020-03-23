@@ -154,8 +154,6 @@ size_t xmrig::Algorithm::l2() const
 
     case RX_WOW:
     case RX_KEVA:
-        return 0x20000;
-
     case DEFYX:
         return 0x20000;
 
@@ -196,10 +194,8 @@ size_t xmrig::Algorithm::l3() const
         case RX_KEVA:
             return oneMiB;
 
-        case DEFYX:
-            return oneMiB / 4;
-
         case RX_ARQ:
+        case DEFYX:
             return oneMiB / 4;
 
         default:

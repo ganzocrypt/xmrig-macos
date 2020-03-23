@@ -42,7 +42,6 @@
 
 #ifdef XMRIG_ALGO_RANDOMX
 #   include "crypto/randomx/randomx.h"
-#   include "crypto/defyx/defyx.h"
 #endif
 
 
@@ -248,24 +247,20 @@ void xmrig::CpuWorker<N>::start()
 
 #           ifdef XMRIG_ALGO_RANDOMX
             if (job.algorithm().family() == Algorithm::RANDOM_X) {
-                if (job.algorithm() == Algorithm::DEFYX) {
-                    if (first) {
-                        first = false;
+                if (first) {
+                    first = false;
+                    if (job.algorithm() == Algorithm::DEFYX) {
                         defyx_calculate_hash_first(m_vm->get(), tempHash, m_job.blob(), job.size());
-                    }
-                    if (!nextRound(m_job)) {
-                        break;
-                    }
-                    defyx_calculate_hash_next(m_vm->get(), tempHash, m_job.blob(), job.size(), m_hash);
-                } else {
-                    if (first) {
-                        first = false;
+                    } else {
                         randomx_calculate_hash_first(m_vm->get(), tempHash, m_job.blob(), job.size());
                     }
-                    if (!nextRound(m_job)) {
-                        break;
-                    }
-                    m_job.nextRound(kReserveCount, 1);
+                }
+                if (!nextRound(m_job)) {
+                    break;
+                }
+                if (job.algorithm() == Algorithm::DEFYX) {
+                    defyx_calculate_hash_next(m_vm->get(), tempHash, m_job.blob(), job.size(), m_hash);
+                } else {
                     randomx_calculate_hash_next(m_vm->get(), tempHash, m_job.blob(), job.size(), m_hash);
                 }
             }
