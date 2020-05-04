@@ -6,6 +6,7 @@ option(WITH_HWLOC           "Enable hwloc support" ON)
 option(WITH_CN_LITE         "Enable CryptoNight-Lite algorithms family" ON)
 option(WITH_CN_HEAVY        "Enable CryptoNight-Heavy algorithms family" ON)
 option(WITH_CN_PICO         "Enable CryptoNight-Pico algorithm" ON)
+option(WITH_CN_GPU          "Enable CryptoNight-GPU algorithm" ON)
 option(WITH_RANDOMX         "Enable RandomX algorithms family" ON)
 option(WITH_ARGON2          "Enable Argon2 algorithms family" ON)
 option(WITH_ASTROBWT        "Enable AstroBWT algorithms family" ON)
@@ -99,6 +100,7 @@ set(SOURCES
     src/core/config/ConfigTransform.cpp
     src/core/Controller.cpp
     src/core/Miner.cpp
+    src/core/Benchmark.cpp
     src/net/JobResults.cpp
     src/net/Network.cpp
     src/net/strategies/DonateStrategy.cpp

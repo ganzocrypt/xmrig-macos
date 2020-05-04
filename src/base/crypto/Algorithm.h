@@ -67,6 +67,7 @@ public:
         RX_0,          // "rx/0"             RandomX (reference configuration).
         RX_WOW,        // "rx/wow"           RandomWOW (Wownero).
         RX_LOKI,       // "rx/loki"          RandomXL (Loki).
+        DEFYX,         // "defyx"            DefyX (Scala).
         RX_ARQ,        // "rx/arq"           RandomARQ (Arqma).
         RX_SFX,        // "rx/sfx"           RandomSFX (Safex Cash).
         RX_KEVA,       // "rx/keva"          RandomKEVA (Keva).

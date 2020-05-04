@@ -95,6 +95,9 @@ bool xmrig::BaseConfig::read(const IJsonReader &reader, const char *fileName)
     m_printTime    = std::min(reader.getUint(kPrintTime, m_printTime), 3600U);
     m_title        = reader.getValue(kTitle);
 
+    m_rebenchAlgo   = reader.getBool("rebench-algo", m_rebenchAlgo);
+    m_benchAlgoTime = reader.getInt("bench-algo-time", m_benchAlgoTime);
+
 #   ifdef XMRIG_FEATURE_TLS
     m_tls = reader.getValue(kTls);
 #   endif
