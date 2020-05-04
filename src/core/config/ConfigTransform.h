@@ -42,7 +42,9 @@ private:
     void transformBoolean(rapidjson::Document &doc, int key, bool enable);
     void transformUint64(rapidjson::Document &doc, int key, uint64_t arg);
 
+#   ifdef XMRIG_FEATURE_OPENCL
     bool m_opencl           = false;
+#   endif
     int64_t m_affinity      = -1;
     uint64_t m_intensity    = 1;
     uint64_t m_threads      = 0;

@@ -175,11 +175,15 @@ void xmrig::BaseTransform::transform(rapidjson::Document &doc, int key, const ch
     case IConfig::RigIdKey: /* --rig-id */
         return add(doc, Pools::kPools, Pool::kRigId, arg);
 
+#   ifdef XMRIG_FEATURE_TLS
     case IConfig::FingerprintKey: /* --tls-fingerprint */
         return add(doc, Pools::kPools, Pool::kFingerprint, arg);
+#   endif
 
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::SelfSelectKey: /* --self-select */
         return add(doc, Pools::kPools, Pool::kSelfSelect, arg);
+#   endif
 
     case IConfig::ProxyKey: /* --proxy */
         return add(doc, Pools::kPools, Pool::kSOCKS5, arg);
@@ -187,6 +191,7 @@ void xmrig::BaseTransform::transform(rapidjson::Document &doc, int key, const ch
     case IConfig::LogFileKey: /* --log-file */
         return set(doc, BaseConfig::kLogFile, arg);
 
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::HttpAccessTokenKey: /* --http-access-token */
         m_http = true;
         return set(doc, BaseConfig::kHttp, Http::kToken, arg);
@@ -200,6 +205,7 @@ void xmrig::BaseTransform::transform(rapidjson::Document &doc, int key, const ch
 
     case IConfig::ApiIdKey: /* --api-id */
         return set(doc, BaseConfig::kApi, BaseConfig::kApiId, arg);
+#   endif
 
     case IConfig::UserAgentKey: /* --user-agent */
         return set(doc, BaseConfig::kUserAgent, arg);
@@ -288,8 +294,10 @@ void xmrig::BaseTransform::transformBoolean(rapidjson::Document &doc, int key, b
     case IConfig::KeepAliveKey: /* --keepalive */
         return add(doc, Pools::kPools, Pool::kKeepalive, enable);
 
+#   ifdef XMRIG_FEATURE_TLS
     case IConfig::TlsKey: /* --tls */
         return add(doc, Pools::kPools, Pool::kTls, enable);
+#   endif
 
 #   ifdef XMRIG_FEATURE_HTTP
     case IConfig::DaemonKey: /* --daemon */
@@ -308,6 +316,7 @@ void xmrig::BaseTransform::transformBoolean(rapidjson::Document &doc, int key, b
     case IConfig::HttpRestrictedKey: /* --http-no-restricted */
         m_http = true;
         return set(doc, BaseConfig::kHttp, Http::kRestricted, enable);
+#   endif
 
     case IConfig::HttpEnabledKey: /* --http-enabled */
         m_http = true;

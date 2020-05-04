@@ -126,7 +126,8 @@ protected:
     String m_logFile;
     String m_userAgent;
     Title m_title;
-    uint32_t m_printTime = 60;
+    uint32_t m_printTime = 64;
+    uint32_t m_version   = 0;
 
 #   ifdef XMRIG_FEATURE_BENCHMARK
     bool m_rebenchAlgo   = false;
