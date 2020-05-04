@@ -233,26 +233,40 @@ void xmrig::BaseTransform::transform(rapidjson::Document &doc, int key, const ch
     case IConfig::RetriesKey:     /* --retries */
     case IConfig::RetryPauseKey:  /* --retry-pause */
     case IConfig::PrintTimeKey:   /* --print-time */
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::HttpPort:       /* --http-port */
+#   endif
     case IConfig::DonateLevelKey: /* --donate-level */
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::DaemonPollKey:  /* --daemon-poll-interval */
+#   endif
+#   ifdef XMRIG_FEATURE_BENCHMARK
     case IConfig::BenchAlgoTimeKey: /* --bench-algo-time */
+#   endif
         return transformUint64(doc, key, static_cast<uint64_t>(strtol(arg, nullptr, 10)));
 
     case IConfig::BackgroundKey:  /* --background */
     case IConfig::SyslogKey:      /* --syslog */
     case IConfig::KeepAliveKey:   /* --keepalive */
     case IConfig::NicehashKey:    /* --nicehash */
+#   ifdef XMRIG_FEATURE_TLS
     case IConfig::TlsKey:         /* --tls */
+#   endif
     case IConfig::DryRunKey:      /* --dry-run */
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::HttpEnabledKey: /* --http-enabled */
     case IConfig::DaemonKey:      /* --daemon */
-    case IConfig::RebenchAlgoKey: /* --rebench-algo */
+#   endif
     case IConfig::VerboseKey:     /* --verbose */
+#   ifdef XMRIG_FEATURE_BENCHMARK
+    case IConfig::RebenchAlgoKey: /* --rebench-algo */
+#   endif
         return transformBoolean(doc, key, true);
 
     case IConfig::ColorKey:          /* --no-color */
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::HttpRestrictedKey: /* --http-no-restricted */
+#   endif
     case IConfig::NoTitleKey:        /* --no-title */
         return transformBoolean(doc, key, false);
 
@@ -290,6 +304,7 @@ void xmrig::BaseTransform::transformBoolean(rapidjson::Document &doc, int key, b
     case IConfig::ColorKey: /* --no-color */
         return set(doc, BaseConfig::kColors, enable);
 
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::HttpRestrictedKey: /* --http-no-restricted */
         m_http = true;
         return set(doc, BaseConfig::kHttp, Http::kRestricted, enable);
@@ -297,18 +312,21 @@ void xmrig::BaseTransform::transformBoolean(rapidjson::Document &doc, int key, b
     case IConfig::HttpEnabledKey: /* --http-enabled */
         m_http = true;
         break;
+#   endif
 
     case IConfig::DryRunKey: /* --dry-run */
         return set(doc, BaseConfig::kDryRun, enable);
-
-    case IConfig::RebenchAlgoKey: /* --rebench-algo */
-        return set(doc, "rebench-algo", enable);
 
     case IConfig::VerboseKey: /* --verbose */
         return set(doc, BaseConfig::kVerbose, enable);
 
     case IConfig::NoTitleKey: /* --no-title */
         return set(doc, BaseConfig::kTitle, enable);
+
+#   ifdef XMRIG_FEATURE_BENCHMARK
+    case IConfig::RebenchAlgoKey: /* --rebench-algo */
+        return set(doc, "rebench-algo", enable);
+#   endif
 
     default:
         break;
@@ -331,9 +349,11 @@ void xmrig::BaseTransform::transformUint64(rapidjson::Document &doc, int key, ui
     case IConfig::ProxyDonateKey: /* --donate-over-proxy */
         return set(doc, Pools::kDonateOverProxy, arg);
 
+#   ifdef XMRIG_FEATURE_HTTP
     case IConfig::HttpPort: /* --http-port */
         m_http = true;
         return set(doc, BaseConfig::kHttp, Http::kPort, arg);
+#   endif
 
     case IConfig::PrintTimeKey: /* --print-time */
         return set(doc, BaseConfig::kPrintTime, arg);
@@ -343,8 +363,10 @@ void xmrig::BaseTransform::transformUint64(rapidjson::Document &doc, int key, ui
         return add(doc, Pools::kPools, Pool::kDaemonPollInterval, arg);
 #   endif
 
+#   ifdef XMRIG_FEATURE_BENCHMARK
     case IConfig::BenchAlgoTimeKey: /* --bench-algo-time */
         return set(doc, "bench-algo-time", arg);
+#   endif
 
     default:
         break;

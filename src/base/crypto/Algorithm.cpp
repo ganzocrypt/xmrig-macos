@@ -107,13 +107,13 @@ static AlgoName const algorithm_names[] = {
     { "RandomWOW",                 nullptr,            Algorithm::RX_WOW          },
     { "randomx/loki",              "rx/loki",          Algorithm::RX_LOKI         },
     { "RandomXL",                  nullptr,            Algorithm::RX_LOKI         },
-    { "DefyX",                     "defyx",            Algorithm::DEFYX           },
     { "randomx/arq",               "rx/arq",           Algorithm::RX_ARQ          },
     { "RandomARQ",                 nullptr,            Algorithm::RX_ARQ          },
     { "randomx/sfx",               "rx/sfx",           Algorithm::RX_SFX          },
     { "RandomSFX",                 nullptr,            Algorithm::RX_SFX          },
     { "randomx/keva",              "rx/keva",          Algorithm::RX_KEVA         },
     { "RandomKEVA",                nullptr,            Algorithm::RX_KEVA         },
+    { "DefyX",                     "defyx",            Algorithm::RX_DEFYX        },
 #   endif
 #   ifdef XMRIG_ALGO_ARGON2
     { "argon2/chukwa",             nullptr,            Algorithm::AR2_CHUKWA      },
@@ -155,9 +155,7 @@ size_t xmrig::Algorithm::l2() const
 
     case RX_WOW:
     case RX_KEVA:
-        return 0x20000;
-
-    case DEFYX:
+    case RX_DEFYX:
         return 0x20000;
 
     case RX_ARQ:
@@ -208,10 +206,8 @@ size_t xmrig::Algorithm::l3() const
         case RX_KEVA:
             return oneMiB;
 
-        case DEFYX:
-            return oneMiB / 4;
-
         case RX_ARQ:
+        case RX_DEFYX:
             return oneMiB / 4;
 
         default:
@@ -327,10 +323,10 @@ xmrig::Algorithm::Family xmrig::Algorithm::family(Id id)
     case RX_0:
     case RX_WOW:
     case RX_LOKI:
-    case DEFYX:
     case RX_ARQ:
     case RX_SFX:
     case RX_KEVA:
+    case RX_DEFYX:
         return RANDOM_X;
 #   endif
 
