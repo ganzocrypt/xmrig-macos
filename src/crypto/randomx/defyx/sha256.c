@@ -89,7 +89,7 @@ be32dec_vect(uint32_t *dst, const unsigned char *src, size_t len)
  * the 512-bit input block to produce a new state.
  */
 static void
-SHA256_Transform(uint32_t * state, const unsigned char block[64])
+_SHA256_Transform(uint32_t * state, const unsigned char block[64])
 {
 	uint32_t W[64];
 	uint32_t S[8];
@@ -256,13 +256,13 @@ SHA256_Update_Y(SHA256_CTX_Y * ctx, const void *in, size_t len)
 
 	/* Finish the current block */
 	memcpy(&ctx->buf[r], src, 64 - r);
-	SHA256_Transform(ctx->state, ctx->buf);
+	_SHA256_Transform(ctx->state, ctx->buf);
 	src += 64 - r;
 	len -= 64 - r;
 
 	/* Perform complete blocks */
 	while (len >= 64) {
-		SHA256_Transform(ctx->state, src);
+		_SHA256_Transform(ctx->state, src);
 		src += 64;
 		len -= 64;
 	}
