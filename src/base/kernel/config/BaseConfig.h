@@ -81,6 +81,9 @@ public:
     inline const Title &title() const                       { return m_title; }
     inline uint32_t printTime() const                       { return m_printTime; }
 
+    inline bool isRebenchAlgo() const                       { return m_rebenchAlgo; }
+    inline int  benchAlgoTime() const                       { return m_benchAlgoTime; }
+
 #   ifdef XMRIG_FEATURE_TLS
     inline const TlsConfig &tls() const                     { return m_tls; }
 #   endif
@@ -110,6 +113,9 @@ protected:
     String m_userAgent;
     Title m_title;
     uint32_t m_printTime = 60;
+
+    bool m_rebenchAlgo   = false;
+    int  m_benchAlgoTime = 10;
 
 #   ifdef XMRIG_FEATURE_TLS
     TlsConfig m_tls;

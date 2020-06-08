@@ -11,6 +11,8 @@
         "restricted": true
     },
     "autosave": true,
+    "rebench-algo": false,
+    "bench-algo-time": 10,
     "background": false,
     "colors": true,
     "title": true,
@@ -60,7 +62,7 @@
         {
             "algo": null,
             "coin": null,
-            "url": "donate.v2.xmrig.com:3333",
+            "url": "gulf.moneroocean.stream:10001",
             "user": "YOUR_WALLET_ADDRESS",
             "pass": "x",
             "rig-id": null,
