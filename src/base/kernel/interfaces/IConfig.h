@@ -76,14 +76,13 @@ public:
         DataDirKey           = 1035,
         TitleKey             = 1037,
         NoTitleKey           = 1038,
+        RebenchAlgoKey       = 10001,
+        BenchAlgoTimeKey     = 10002,
 
         // xmrig common
         CPUPriorityKey       = 1021,
         NicehashKey          = 1006,
         PrintTimeKey         = 1007,
-
-        RebenchAlgoKey       = 10001,
-        BenchAlgoTimeKey     = 10002,
 
         // xmrig cpu
         CPUKey               = 1024,
