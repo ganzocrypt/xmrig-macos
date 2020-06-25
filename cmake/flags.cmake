@@ -14,6 +14,18 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 include(CheckSymbolExists)
+set(CMAKE_REQUIRED_QUIET TRUE)
+message(STATUS "Looking for _rotr in <x86intrin.h>...")
+check_symbol_exists("_rotr" "x86intrin.h" HAVE_X86ROTR)
+if (NOT HAVE_X86ROTR)
+    message(STATUS "Looking for _rotr in <intrin.h>...")
+    check_symbol_exists("_rotr" "intrin.h" HAVE_ROTR)
+endif()
+if (HAVE_X86ROTR OR HAVE_ROTR)
+    message(STATUS "Looking for _rotr - found")
+    add_definitions(/DHAVE_ROTR)
+endif()
+unset(CMAKE_REQUIRED_QUIET)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-strict-aliasing")
@@ -31,8 +43,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
     else()
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -maes")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes")
-
-        add_definitions(/DHAVE_ROTR)
     endif()
 
     if (WIN32)
@@ -70,7 +80,6 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES MSVC)
     add_definitions(/D_CRT_SECURE_NO_WARNINGS)
     add_definitions(/D_CRT_NONSTDC_NO_WARNINGS)
     add_definitions(/DNOMINMAX)
-    add_definitions(/DHAVE_ROTR)
 
 elseif (CMAKE_CXX_COMPILER_ID MATCHES Clang)
 
@@ -89,10 +98,10 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES Clang)
     else()
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -maes")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes")
-
-        check_symbol_exists("_rotr" "x86intrin.h" HAVE_ROTR)
-        if (HAVE_ROTR)
-            add_definitions(/DHAVE_ROTR)
+        if ((${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL "10.0.0") AND (NOT XMRIG_OS_APPLE))
+            message(STATUS "Clang 10+: enabling -mbranches-within-32B-boundaries")
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mbranches-within-32B-boundaries")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mbranches-within-32B-boundaries")
         endif()
     endif()
 
@@ -100,6 +109,32 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES Clang)
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
     endif()
 
+elseif (CMAKE_CXX_COMPILER_ID MATCHES Intel)
+
+    if (("${ICC_COMPILERS}" STREQUAL "") AND (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 17) AND (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 20))
+        # locate best gcc version to pass to icc 18 or 19 (gcc-8 doesn't work, for example)
+        # Use -DICC_GCCVER=6 for example to force 'gcc-6' and 'g++-6'
+        # Otherwise, the newest available and compatible pair will be selected
+        find_program(ICC_GXX NAMES "g++-${ICC_GCCVER}" "g++-7" "g++-6" "g++")
+        get_filename_component(ICC_GXX ${ICC_GXX} NAME)
+        find_program(ICC_GCC NAMES "gcc-${ICC_GCCVER}" "gcc-7" "gcc-6" "gcc")
+        get_filename_component(ICC_GCC ${ICC_GCC} NAME)
+        set(ICC_COMPILERS "-gxx-name=${ICC_GXX} -gcc-name=${ICC_GCC}")
+        unset(ICC_GXX)
+        unset(ICC_GCC)
+    endif()
+    message(STATUS "Intel ICC subcompiler flags: ${ICC_COMPILERS}")
+
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${ICC_COMPILERS} -Wall -Wno-strict-aliasing")
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Ofast -funroll-loops -fmerge-all-constants -ipo")
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ICC_COMPILERS} -Wall -fexceptions -fno-rtti -Wno-strict-aliasing")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -funroll-loops -fmerge-all-constants -ipo -s")
+
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -maes")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes")
+
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++ -static-intel")
 endif()
 
 if (NOT WIN32)
