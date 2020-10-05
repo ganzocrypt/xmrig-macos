@@ -134,6 +134,10 @@ static AlgoName const algorithm_names[] = {
     { "cn-extremelite/upx2",       nullptr,            Algorithm::CN_UPX2         },
     { "cryptonight-upx/2",         nullptr,            Algorithm::CN_UPX2         },
 #   endif
+#   ifdef XMRIG_ALGO_CN_GPU
+    { "cryptonight/gpu",           "cn/gpu",           Algorithm::CN_GPU          },
+    { "cryptonight_gpu",           nullptr,            Algorithm::CN_GPU          },
+#   endif
 };
 
 
@@ -297,6 +301,12 @@ uint32_t xmrig::Algorithm::maxIntensity() const
     }
 #   endif
 
+#   ifdef XMRIG_ALGO_CN_GPU
+    if (m_id == CN_GPU) {
+        return 1;
+    }
+#   endif
+
     return 5;
 }
 
@@ -316,6 +326,9 @@ xmrig::Algorithm::Family xmrig::Algorithm::family(Id id)
     case CN_ZLS:
     case CN_DOUBLE:
     case CN_CCX:
+#   ifdef XMRIG_ALGO_CN_GPU
+    case CN_GPU:
+#   endif
         return CN;
 
 #   ifdef XMRIG_ALGO_CN_LITE

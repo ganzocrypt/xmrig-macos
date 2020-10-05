@@ -166,9 +166,20 @@ bool xmrig::CpuWorker<N>::selfTest()
                         verify(Algorithm::CN_RWZ,    test_output_rwz)  &&
                         verify(Algorithm::CN_ZLS,    test_output_zls)  &&
                         verify(Algorithm::CN_CCX,    test_output_ccx)  &&
+#                       ifdef XMRIG_ALGO_CN_GPU
+                        verify(Algorithm::CN_GPU,    test_output_gpu)  &&
+#                       endif
                         verify(Algorithm::CN_DOUBLE, test_output_double);
 
+#       ifdef XMRIG_ALGO_CN_GPU
+        if (!rc || N > 1) {
+            return rc;
+        }
+
+        return verify(Algorithm::CN_GPU, test_output_gpu);
+#       else
         return rc;
+#       endif
     }
 
 #   ifdef XMRIG_ALGO_CN_LITE

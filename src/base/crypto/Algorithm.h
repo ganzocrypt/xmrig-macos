@@ -65,6 +65,7 @@ public:
         CN_PICO_TLO,   // "cn-pico/tlo"      CryptoNight-Pico (TLO)
         CN_CCX,        // "cn/ccx"           Conceal (CCX)
         CN_UPX2,       // "cn/upx2"          Uplexa (UPX2)
+        CN_GPU,        // "cn/gpu"           CryptoNight-GPU (Ryo).
         RX_0,          // "rx/0"             RandomX (reference configuration).
         RX_WOW,        // "rx/wow"           RandomWOW (Wownero).
         RX_ARQ,        // "rx/arq"           RandomARQ (Arqma).
