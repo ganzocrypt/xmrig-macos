@@ -361,6 +361,12 @@ xmrig::CpuThreads xmrig::BasicCpuInfo::threads(const Algorithm &algorithm, uint3
     }
 #   endif
 
+#   ifdef XMRIG_ALGO_CN_GPU
+    if (algorithm == Algorithm::CN_GPU) {
+        return count;
+    }
+#   endif
+
     return CpuThreads(std::max<size_t>(count / 2, 1), 1);
 }
 
