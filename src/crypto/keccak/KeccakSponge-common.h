@@ -15,7 +15,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #define _KeccakSpongeCommon_h_
 
 #include <string.h>
-#include "align.h"
+#include "../align.h"
 
 #define KCP_DeclareSpongeStructure(prefix, size, alignment) \
     ALIGN(alignment) typedef struct prefix##_SpongeInstanceStruct { \

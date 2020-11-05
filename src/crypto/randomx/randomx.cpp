@@ -48,9 +48,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cassert>
 
 extern "C" {
-#include "crypto/randomx/defyx/yescrypt.h"
-#include "crypto/randomx/panthera/yespower.h"
-#include "crypto/randomx/defyx/KangarooTwelve.h"
+#include "crypto/yes/yescrypt.h"
+#include "crypto/yes/yespower.h"
+#include "crypto/k12/KangarooTwelve.h"
 }
 
 #include "base/tools/Profiler.h"

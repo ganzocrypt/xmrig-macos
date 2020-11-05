@@ -15,8 +15,8 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifndef KeccakP1600_excluded
 
 #include <stddef.h>
-#include "align.h"
-#include "KeccakSpongeWidth1600.h"
+#include "../align.h"
+#include "../keccak/KeccakSpongeWidth1600.h"
 #include "Phases.h"
 
 typedef KCP_Phases KangarooTwelve_Phases;
