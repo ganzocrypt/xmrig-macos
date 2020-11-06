@@ -70,21 +70,21 @@ class MoBenchmark : public IJobResultListener {
         Job* m_bench_job[BenchAlgo::MAX];
         double m_bench_algo_perf[BenchAlgo::MAX];
 
-        Controller* m_controller;          // to get access to config and network
-        bool m_isNewBenchRun;              // true if benchmark is need to be executed or was executed
-        MoBenchmark::BenchAlgo m_bench_algo; // current perf algo we benchmark
-        uint64_t m_hash_count;             // number of hashes calculated for current perf algo
-        uint64_t m_time_start;             // time of the first resultt for current perf algo (in ms)
-        uint64_t m_bench_start;            // time of measurements start for current perf algo (in ms) after all backends are started
-        unsigned m_enabled_backend_count;  // number of active miner backends
+        Controller* m_controller;              // to get access to config and network
+        bool m_isNewBenchRun;                  // true if benchmark is need to be executed or was executed
+        MoBenchmark::BenchAlgo m_bench_algo;   // current perf algo we benchmark
+        uint64_t m_hash_count;                 // number of hashes calculated for current perf algo
+        uint64_t m_time_start;                 // time of the first resultt for current perf algo (in ms)
+        uint64_t m_bench_start;                // time of measurements start for current perf algo (in ms) after all backends are started
+        unsigned m_enabled_backend_count;      // number of active miner backends
         std::set<uint32_t> m_backends_started; // id of backend started for benchmark
 
-        uint64_t get_now() const;                      // get current time in ms
+        uint64_t get_now() const;                       // get current time in ms
         double get_algo_perf(Algorithm::Id algo) const; // get algo perf based on m_bench_algo_perf
-        void start(const MoBenchmark::BenchAlgo);        // start benchmark for specified perf algo
-        void finish();                                 // end of benchmarks, switch to jobs from the pool (network), fill algo_perf
-        void onJobResult(const JobResult&) override;   // onJobResult is called after each computed benchmark hash
-        void run_next_bench_algo(BenchAlgo);           // run next bench algo or finish benchmark for the last one
+        void start(const MoBenchmark::BenchAlgo);       // start benchmark for specified perf algo
+        void finish();                                  // end of benchmarks, switch to jobs from the pool (network), fill algo_perf
+        void onJobResult(const JobResult&) override;    // onJobResult is called after each computed benchmark hash
+        void run_next_bench_algo(BenchAlgo);            // run next bench algo or finish benchmark for the last one
 
     public:
         MoBenchmark();

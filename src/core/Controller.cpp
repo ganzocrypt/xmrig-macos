@@ -70,7 +70,7 @@ void xmrig::Controller::pre_start()
 void xmrig::Controller::start()
 {
     Base::start();
-#ifndef XMRIG_FEATURE_BENCHMARK
+#ifndef XMRIG_FEATURE_MO_BENCHMARK
     m_miner = new Miner(this);
 #endif
     network()->connect();
