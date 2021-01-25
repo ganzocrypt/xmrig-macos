@@ -133,8 +133,6 @@ struct RandomX_ConfigurationBase
 	uint8_t codePrefetchScratchpadTweaked[28];
 	uint32_t codePrefetchScratchpadTweakedSize;
 
-        uint32_t CacheLineAlignMask_Calculated;
-
 	uint32_t AddressMask_Calculated[4];
 	uint32_t ScratchpadL3Mask_Calculated;
 	uint32_t ScratchpadL3Mask64_Calculated;
