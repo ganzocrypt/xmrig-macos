@@ -88,6 +88,10 @@ public:
     inline int priority() const                         { return m_priority; }
     inline uint32_t limit() const                       { return m_limit; }
 
+#   ifdef XMRIG_FEATURE_HWMON
+    inline bool isHwmonEnabled() const                  { return m_hwmon; }
+#   endif
+
 private:
     void generate();
     void setAesMode(const rapidjson::Value &value);
@@ -109,6 +113,10 @@ private:
     String m_argon2Impl;
     Threads<CpuThreads> m_threads;
     uint32_t m_limit        = 100;
+
+#   ifdef XMRIG_FEATURE_HWMON
+    bool m_hwmon            = true;
+#   endif
 };
 
 

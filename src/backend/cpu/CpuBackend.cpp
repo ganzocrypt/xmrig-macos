@@ -61,6 +61,11 @@
 #endif
 
 
+#ifdef XMRIG_FEATURE_HWMON
+#include "backend/cpu/wrappers/HwmonLib.h"
+#endif
+
+
 namespace xmrig {
 
 
@@ -342,6 +347,22 @@ void xmrig::CpuBackend::printHashrate(bool details)
 
 void xmrig::CpuBackend::printHealth()
 {
+#   ifdef XMRIG_FEATURE_HWMON
+    if (!HwmonLib::isReady()) {
+        return;
+    }
+
+    const auto health = HwmonLib::health();
+    LOG_INFO("%s" MAGENTA_BOLD("%4uW") CSI "1;%um %2uC" CYAN_BOLD(" %4u") CYAN("RPM") WHITE_BOLD(" %u/%u") "MHz",
+             Tags::cpu(),
+             health.power,
+             health.temperature < 60 ? 32 : (health.temperature > 85 ? 31 : 33),
+             health.temperature,
+             health.rpm,
+             health.clock,
+             health.memClock
+             );
+#   endif
 }
 
 

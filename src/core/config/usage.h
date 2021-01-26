@@ -84,6 +84,9 @@ static inline const std::string &usage()
     u += "      --cpu-no-yield            prefer maximum hashrate rather than system response/stability\n";
     u += "      --no-huge-pages           disable huge pages support\n";
     u += "      --asm=ASM                 ASM optimizations, possible values: auto, none, intel, ryzen, bulldozer\n";
+#   ifdef XMRIG_FEATURE_HWMON
+    u += "      --no-hwmon                disable HWMON (thermal monitoring) support\n";
+#   endif
 
 #   if defined(__x86_64__) || defined(_M_AMD64)
     u += "      --argon2-impl=IMPL        argon2 implementation: x86_64, SSE2, SSSE3, XOP, AVX2, AVX-512F\n";

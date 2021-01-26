@@ -49,6 +49,11 @@
 #endif
 
 
+#ifdef XMRIG_FEATURE_HWMON
+#include "backend/cpu/wrappers/HwmonLib.h"
+#endif
+
+
 namespace xmrig {
 
 
@@ -191,6 +196,29 @@ static void print_threads(const Config *config)
 #   endif
 }
 
+#ifdef XMRIG_FEATURE_HWMON
+static void print_hwmon(const Config *config)
+{
+    if (config->cpu().isHwmonEnabled()) {
+#       ifdef XMRIG_OS_LINUX
+        if (HwmonLib::init()) {
+            Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "press " MAGENTA_BG(WHITE_BOLD_S "e") " for health report",
+                       "HWMON"
+                       );
+        }
+        else {
+            Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "%s", "HWMON", YELLOW_BOLD("unavailable"));
+        }
+#       else
+        Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "%s", "HWMON", RED_BOLD("disabled (init failed)"));
+#       endif
+    }
+    else {
+        Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "%s", "HWMON", YELLOW_BOLD("disabled"));
+    }
+}
+#endif
+
 
 static void print_commands(Config *)
 {
@@ -220,6 +248,9 @@ void xmrig::Summary::print(Controller *controller)
     print_cpu(config);
     print_memory(config);
     print_threads(config);
+#   ifdef XMRIG_FEATURE_HWMON
+    print_hwmon(config);
+#   endif
     config->pools().print();
 
     print_commands(config);

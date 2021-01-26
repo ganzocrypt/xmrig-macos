@@ -55,3 +55,20 @@ if (XMRIG_ARM)
 else()
     list(APPEND SOURCES_BACKEND_CPU src/backend/cpu/platform/BasicCpuInfo.cpp)
 endif()
+
+if (WITH_HWMON AND (XMRIG_OS_WIN OR XMRIG_OS_LINUX))
+    add_definitions(/DXMRIG_FEATURE_HWMON)
+
+    list(APPEND HEADERS_BACKEND_CPU
+         src/backend/cpu/wrappers/HwmonHealth.h
+         src/backend/cpu/wrappers/HwmonLib.h
+         )
+
+    if (XMRIG_OS_WIN)
+        list(APPEND SOURCES_BACKEND_CPU src/backend/cpu/wrappers/HwmonLib.cpp)
+    else()
+        list(APPEND SOURCES_BACKEND_CPU src/backend/cpu/wrappers/HwmonLib_linux.cpp)
+    endif()
+else()
+   remove_definitions(/DXMRIG_FEATURE_HWMON)
+endif()

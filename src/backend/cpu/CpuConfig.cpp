@@ -57,6 +57,10 @@ const char *CpuConfig::kAstroBWTMaxSize     = "astrobwt-max-size";
 const char *CpuConfig::kAstroBWTAVX2        = "astrobwt-avx2";
 #endif
 
+#ifdef XMRIG_FEATURE_HWMON
+static const char *kHwmon         = "hwmon";
+#endif
+
 
 extern template class Threads<CpuThreads>;
 
@@ -99,6 +103,10 @@ rapidjson::Value xmrig::CpuConfig::toJSON(rapidjson::Document &doc) const
 #   ifdef XMRIG_ALGO_ASTROBWT
     obj.AddMember(StringRef(kAstroBWTMaxSize),  m_astrobwtMaxSize, allocator);
     obj.AddMember(StringRef(kAstroBWTAVX2),     m_astrobwtAVX2, allocator);
+#   endif
+
+#   ifdef XMRIG_FEATURE_HWMON
+    obj.AddMember(StringRef(kHwmon), m_hwmon, allocator);
 #   endif
 
     m_threads.toJSON(obj, doc);
@@ -170,6 +178,10 @@ void xmrig::CpuConfig::read(const rapidjson::Value &value)
         else {
             m_astrobwtAVX2 = astroBWTAVX2.GetBool();
         }
+#       endif
+
+#       ifdef XMRIG_FEATURE_HWMON
+        m_hwmon = Json::getBool(value, kHwmon, m_hwmon);
 #       endif
 
         m_threads.read(value);
