@@ -287,16 +287,17 @@ void xmrig::CpuWorker<N>::start()
 
 #           ifdef XMRIG_ALGO_RANDOMX
             if (job.algorithm().family() == Algorithm::RANDOM_X) {
+
                 if (first) {
                     first = false;
-                    randomx_calculate_hash_first(m_vm, tempHash, m_job.blob(), job.size());
+                    randomx_calculate_hash_first(m_vm, tempHash, m_job.blob(), job.size(), job.algorithm());
                 }
 
                 if (!nextRound()) {
                     break;
                 }
 
-                randomx_calculate_hash_next(m_vm, tempHash, m_job.blob(), job.size(), m_hash);
+                randomx_calculate_hash_next(m_vm, tempHash, m_job.blob(), job.size(), m_hash, job.algorithm());
             }
             else
 #           endif
