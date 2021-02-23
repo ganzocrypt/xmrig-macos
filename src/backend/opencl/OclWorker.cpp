@@ -46,7 +46,6 @@
 #   include "backend/opencl/runners/OclRyoRunner.h"
 #endif
 
-
 #include <cassert>
 #include <thread>
 
