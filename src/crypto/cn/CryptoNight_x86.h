@@ -754,11 +754,16 @@ inline void cryptonight_single_hash(const uint8_t *__restrict__ input, size_t si
 
             int64_t d5;
 
-#           if defined(_MSC_VER) || (defined(__GNUC__) && (__GNUC__ == 8))
+#           if defined _MSC_VER
             d5 = d | 5;
 #           else
-            // Workaround for stupid GCC which converts to 32 bit before doing "| 5" and then converts back to 64 bit
-            asm("mov %1, %0\n\tor $5, %0" : "=r"(d5) : "r"(d));
+            if (SOFT_AES || __GNUC__ != 8) {
+                // Workaround for stupid GCC which converts to 32 bit before doing "| 5" and then converts back to 64 bit
+                asm("mov %1, %0\n\tor $5, %0" : "=r"(d5) : "r"(d));
+            } else {
+                // Workaround for stupid GCC 8 with AES where the above doesn't work for some reason
+                d5 = (int64_t)d | (int64_t)5;
+            }
 #           endif
 
             int64_t q = n / d5;
