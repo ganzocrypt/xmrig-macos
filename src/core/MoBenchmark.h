@@ -38,6 +38,7 @@ class MoBenchmark : public IJobResultListener {
             CN_HEAVY_XHV,  // "cn-heavy/xhv"     CryptoNight-Heavy (modified, Haven Protocol only).
             CN_PICO_0,     // "cn-pico"          CryptoNight-Pico.
             CN_CCX,        // "cn/ccx"           Conceal (CCX).
+            CN_UPX2,       // "cn/upx2"          Uplexa (UPX2)
             CN_GPU,        // "cn/gpu"           CryptoNight-GPU (Ryo).
             AR2_CHUKWA_V2, // "argon2/chukwav2"  Argon2id (Chukwa v2).
             KAWPOW_RVN,    // "kawpow/rvn"       KawPow (RVN)
@@ -57,6 +58,7 @@ class MoBenchmark : public IJobResultListener {
             Algorithm::CN_HEAVY_XHV,
             Algorithm::CN_PICO_0,
             Algorithm::CN_CCX,
+            Algorithm::CN_UPX2,
             Algorithm::CN_GPU,
             Algorithm::AR2_CHUKWA_V2,
             Algorithm::KAWPOW_RVN,
