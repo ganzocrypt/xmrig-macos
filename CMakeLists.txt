@@ -29,6 +29,7 @@ option(WITH_SSE4_1          "Enable SSE 4.1 for Blake2" ON)
 option(WITH_BENCHMARK       "Enable builtin RandomX benchmark and stress test" ON)
 option(WITH_SECURE_JIT      "Enable secure access to JIT memory" OFF)
 option(WITH_DMI             "Enable DMI/SMBIOS reader" ON)
+option(WITH_AUTO_HUGEPAGE   "Enable Automatic setting of nr_hugepages (Linux Only)" OFF)
 option(WITH_MO_BENCHMARK    "Enable Benchmark module and algo-perf feature (for MoneroOcean)" ON)
 
 option(BUILD_STATIC         "Build static binary" OFF)
@@ -169,6 +170,10 @@ else()
             )
 
         set(EXTRA_LIBS pthread rt dl)
+
+        if (WITH_AUTO_HUGEPAGE)
+          add_definitions(/DXMRIG_FEATURE_AUTO_HUGEPAGE)
+        endif()
     elseif (XMRIG_OS_FREEBSD)
         set(EXTRA_LIBS kvm pthread)
     endif()
