@@ -63,8 +63,8 @@ public:
         CN_PICO_0,     // "cn-pico"          CryptoNight-Pico
         CN_PICO_TLO,   // "cn-pico/tlo"      CryptoNight-Pico (TLO)
         CN_CCX,        // "cn/ccx"           Conceal (CCX)
-        CN_UPX2,       // "cn/upx2"          Uplexa (UPX2)
         CN_GPU,        // "cn/gpu"           CryptoNight-GPU (Ryo).
+        CN_UPX2,       // "cn/upx2"          Uplexa (UPX2)
         // CryptoNight variants must be above this line
         // (index of RX_0 is used in loops as "end of all CN families" marker)
         // next line MUST be RX_0
@@ -78,6 +78,7 @@ public:
         AR2_WRKZ,      // "argon2/wrkz"      Argon2id (WRKZ)
         ASTROBWT_DERO, // "astrobwt"         AstroBWT (Dero)
         KAWPOW_RVN,    // "kawpow/rvn"       KawPow (RVN)
+        RX_XLA,        // "panthera"         Panthera (Scala2).
         MAX,
         MIN = 0,
         INVALID = -1,
