@@ -29,10 +29,13 @@
 
 
 #ifdef XMRIG_OS_APPLE
+#   include <unistd.h>
 #   include <libkern/OSCacheControl.h>
 #   include <mach/vm_statistics.h>
 #   include <pthread.h>
 #   include <TargetConditionals.h>
+#   include <mach/mach.h>
+#   include <mach/mach_vm.h>
 #   ifdef XMRIG_ARM
 #       define MEXTRA MAP_JIT
 #   else
@@ -75,11 +78,7 @@ static inline int hugePagesFlag(size_t size)
 
 bool xmrig::VirtualMemory::isHugepagesAvailable()
 {
-#   if defined(XMRIG_OS_MACOS) && defined(XMRIG_ARM)
-    return false;
-#   else
     return true;
-#   endif
 }
 
 
@@ -161,7 +160,22 @@ void *xmrig::VirtualMemory::allocateExecutableMemory(size_t size, bool hugePages
 void *xmrig::VirtualMemory::allocateLargePagesMemory(size_t size)
 {
 #   if defined(XMRIG_OS_APPLE)
-    void *mem = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, VM_FLAGS_SUPERPAGE_SIZE_2MB, 0);
+    //void *mem = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, VM_FLAGS_SUPERPAGE_SIZE_2MB, 0);
+    //printf("mem:%llx\n", &mem);
+#   ifdef XMRIG_ARM
+    #define SUPERPAGE_SIZE getpagesize()
+#   else
+    #define SUPERPAGE_SIZE hugePageSize()
+#   endif
+    unsigned int huges = size / SUPERPAGE_SIZE + (size % SUPERPAGE_SIZE != 0);
+    printf("allocating %d of %zuKB pages\n", huges, SUPERPAGE_SIZE);
+    void *mem = MAP_FAILED;
+    kern_return_t kr;
+    mach_vm_address_t global_addr = 0;
+    kr = mach_vm_allocate(mach_task_self(), &global_addr, size, VM_FLAGS_ANYWHERE);
+    printf("kr:%d g_a:%llx\n", kr, global_addr);
+    if (!kr && global_addr) mem = (void*)global_addr;
+    if (kr) mach_error("", kr);
 #   elif defined(__FreeBSD__)
     void *mem = mmap(0, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_ALIGNED_SUPER | MAP_PREFAULT_READ, -1, 0);
 #   else
