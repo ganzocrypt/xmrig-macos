@@ -78,8 +78,13 @@ inline static const char *asmName(Assembly::Id assembly)
 
 static void print_pages(const Config *config)
 {
-    Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "%s",
-               "HUGE PAGES", config->cpu().isHugePages() ? (VirtualMemory::isHugepagesAvailable() ? kHugepagesSupported : RED_BOLD("unavailable")) : RED_BOLD("disabled"));
+    if (config->cpu().isHugePages() && VirtualMemory::isHugepagesAvailable()) {
+        Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "%s" GREEN_BOLD(" (%dKB)"),
+                   "HUGE PAGES", kHugepagesSupported, config->cpu().hugePageSize() / 1024U);
+    } else {
+        Log::print(GREEN_BOLD(" * ") WHITE_BOLD("%-13s") "%s",
+                   "HUGE PAGES", config->cpu().isHugePages() ? (VirtualMemory::isHugepagesAvailable() ? kHugepagesSupported : RED_BOLD("unavailable")) : RED_BOLD("disabled"));
+    }
 
 #   ifdef XMRIG_ALGO_RANDOMX
 #   ifdef XMRIG_OS_LINUX
