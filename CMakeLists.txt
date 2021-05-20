@@ -30,7 +30,8 @@ option(WITH_SECURE_JIT      "Enable secure access to JIT memory" OFF)
 option(WITH_DMI             "Enable DMI/SMBIOS reader" ON)
 
 option(BUILD_STATIC         "Build static binary" OFF)
-option(ARM_TARGET           "Force use specific ARM target 8 or 7" 0)
+set(ARM_TARGET 0 CACHE STRING "Force use specific ARM target 8 or 7")
+set_property(CACHE ARM_TARGET PROPERTY STRINGS 0 7 8)
 option(HWLOC_DEBUG          "Enable hwloc debug helpers and log" OFF)
 
 
