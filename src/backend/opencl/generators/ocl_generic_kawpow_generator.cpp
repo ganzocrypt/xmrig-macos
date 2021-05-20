@@ -31,12 +31,23 @@
 #include "crypto/rx/RxAlgo.h"
 
 
+#include <iostream>
+
+
 namespace xmrig {
 
+constexpr const size_t oneMiB = 1024u * 1024u;
 
 bool ocl_generic_kawpow_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads)
 {
+    std::cout << "algorithm:" << algorithm.family() << "; KAWPOW:" << Algorithm::KAWPOW << "." << std::endl;
     if (algorithm.family() != Algorithm::KAWPOW) {
+        return false;
+    }
+
+    std::cout << "MemSize:" << device.globalMemSize() << "; 3072:" << 3072 * oneMiB << "." << std::endl;
+    if (device.globalMemSize() < 3072 * oneMiB) {
+        // 3GB good until ~= September 06, 2021
         return false;
     }
 
