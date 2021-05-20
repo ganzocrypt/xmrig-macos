@@ -220,7 +220,11 @@ void xmrig::CpuConfig::setAesMode(const rapidjson::Value &value)
 void xmrig::CpuConfig::setHugePages(const rapidjson::Value &value)
 {
     if (value.IsBool()) {
+#   if defined(XMRIG_OS_APPLE) && defined(XMRIG_ARM)
+        m_hugePageSize = value.GetBool() ? 16U : 0U;
+#   else
         m_hugePageSize = value.GetBool() ? kDefaultHugePageSizeKb : 0U;
+#   endif
     }
     else if (value.IsUint()) {
         const uint32_t size = value.GetUint();
