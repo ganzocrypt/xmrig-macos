@@ -30,6 +30,7 @@
 
 
 #include <algorithm>
+#include <iostream>
 
 
 namespace xmrig {
@@ -38,10 +39,11 @@ namespace xmrig {
 constexpr const size_t oneMiB = 1024u * 1024u;
 
 
-
 bool ocl_generic_cn_gpu_generator(const OclDevice &device, const Algorithm &algorithm, OclThreads &threads)
 {
-    if (algorithm != Algorithm::CN_GPU) {
+    std::cout << "algorithm:" << algorithm << "; GN_GPU:" << algorithm.parse("cn/gpu") << "." << std::endl;
+    std::cout << "algorithm_name:" << algorithm.name() << "." << std::endl;
+    if (algorithm != algorithm.parse("cn/gpu")) {
         return false;
     }
 
@@ -61,6 +63,13 @@ bool ocl_generic_cn_gpu_generator(const OclDevice &device, const Algorithm &algo
     }
 
     size_t maxThreads = device.computeUnits() * 6 * 8;
+
+    std::cout << "vendorId:" << device.vendorId() << "; OCL_VENDOR_NVIDIA:" << OCL_VENDOR_NVIDIA << "." << std::endl;
+    if (device.vendorId() == OCL_VENDOR_NVIDIA) {
+        std::cout << "vendor:" << device.vendor() << "." << std::endl;
+        worksize = device.computeUnits();
+        maxThreads = device.computeUnits() * 32;
+    }
 
     const size_t maxAvailableFreeMem = device.freeMemSize() - minFreeMem;
     const size_t memPerThread        = std::min(device.maxMemAllocSize(), maxAvailableFreeMem);

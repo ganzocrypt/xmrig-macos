@@ -19,6 +19,8 @@ option(WITH_MSR             "Enable MSR mod & 1st-gen Ryzen fix" ON)
 option(WITH_ENV_VARS        "Enable environment variables support in config file" ON)
 option(WITH_EMBEDDED_CONFIG "Enable internal embedded JSON config" OFF)
 option(WITH_OPENCL          "Enable OpenCL backend" OFF)
+set(WITH_OPENCL_VERSION 200 CACHE STRING "Target OpenCL version")
+set_property(CACHE WITH_OPENCL_VERSION PROPERTY STRINGS 120 200 210 220)
 option(WITH_CUDA            "Enable CUDA backend" OFF)
 option(WITH_NVML            "Enable NVML (NVIDIA Management Library) support (only if CUDA backend enabled)" OFF)
 option(WITH_ADL             "Enable ADL (AMD Display Library) or sysfs support (only if OpenCL backend enabled)" OFF)
@@ -33,7 +35,8 @@ option(WITH_AUTO_HUGEPAGE   "Enable Automatic setting of nr_hugepages (Linux Onl
 option(WITH_MO_BENCHMARK    "Enable Benchmark module and algo-perf feature (for MoneroOcean)" ON)
 
 option(BUILD_STATIC         "Build static binary" OFF)
-option(ARM_TARGET           "Force use specific ARM target 8 or 7" 0)
+set(ARM_TARGET 0 CACHE STRING "Force use specific ARM target 8 or 7")
+set_property(CACHE ARM_TARGET PROPERTY STRINGS 0 7 8)
 option(HWLOC_DEBUG          "Enable hwloc debug helpers and log" OFF)
 
 
