@@ -1,7 +1,12 @@
 /*
+The eXtended Keccak Code Package (XKCP)
+https://github.com/XKCP/XKCP
+
+KangarooTwelve, designed by Guido Bertoni, Joan Daemen, Michaël Peeters, Gilles Van Assche, Ronny Van Keer and Benoît Viguier.
+
 Implementation by Ronny Van Keer, hereby denoted as "the implementer".
 
-For more information, feedback or questions, please refer to our website:
+For more information, feedback or questions, please refer to the Keccak Team website:
 https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
@@ -10,11 +15,19 @@ http://creativecommons.org/publicdomain/zero/1.0/
 */
 
 #include <string.h>
+#include <stdint.h>
 #include "KangarooTwelve.h"
-#ifndef KeccakP1600timesN_excluded
-    // #include "KeccakP-1600-times2-SnP.h"
-    // #include "KeccakP-1600-times4-SnP.h"
-    // #include "KeccakP-1600-times8-SnP.h"
+
+#ifdef XKCP_has_KeccakP1600times2
+    #include "KeccakP-1600-times2-SnP.h"
+#endif
+
+#ifdef XKCP_has_KeccakP1600times4
+    #include "KeccakP-1600-times4-SnP.h"
+#endif
+
+#ifdef XKCP_has_KeccakP1600times8
+    #include "KeccakP-1600-times8-SnP.h"
 #endif
 
 #define chunkSize       8192
@@ -40,7 +53,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
         \
         KeccakP1600times##Parallellism##_StaticInitialize(); \
         KeccakP1600times##Parallellism##_InitializeAll(states); \
-        fastLoopOffset = KeccakP1600times##Parallellism##_12rounds_FastLoop_Absorb(states, rateInLanes, chunkSize / laneSize, rateInLanes, localInput, Parallellism * chunkSize); \
+        fastLoopOffset = (unsigned int)KeccakP1600times##Parallellism##_12rounds_FastLoop_Absorb(states, rateInLanes, chunkSize / laneSize, rateInLanes, localInput, Parallellism * chunkSize); \
         localBlockLen -= fastLoopOffset; \
         localInput += fastLoopOffset; \
         for ( i = 0; i < Parallellism; ++i, localInput += chunkSize ) { \
@@ -85,6 +98,17 @@ http://creativecommons.org/publicdomain/zero/1.0/
         if (KeccakWidth1600_12rounds_SpongeAbsorb(&ktInstance->finalNode, intermediate, Parallellism * capacityInBytes) != 0) return 1; \
     }
 
+#define ProcessLeaves( Parallellism ) \
+    while ( inLen >= Parallellism * chunkSize ) { \
+        unsigned char intermediate[Parallellism*capacityInBytes]; \
+        \
+        KeccakP1600times##Parallellism##_K12ProcessLeaves(input, intermediate); \
+        input += Parallellism * chunkSize; \
+        inLen -= Parallellism * chunkSize; \
+        ktInstance->blockNumber += Parallellism; \
+        if (KeccakWidth1600_12rounds_SpongeAbsorb(&ktInstance->finalNode, intermediate, Parallellism * capacityInBytes) != 0) return 1; \
+    }
+
 static unsigned int right_encode( unsigned char * encbuf, size_t value )
 {
     unsigned int n, i;
@@ -114,7 +138,7 @@ int KangarooTwelve_Update(KangarooTwelve_Instance *ktInstance, const unsigned ch
 
     if ( ktInstance->blockNumber == 0 ) {
         /* First block, absorb in final node */
-        unsigned int len = (inLen < (chunkSize - ktInstance->queueAbsorbedLen)) ? inLen : (chunkSize - ktInstance->queueAbsorbedLen);
+        unsigned int len = (inLen < (chunkSize - ktInstance->queueAbsorbedLen)) ? (unsigned int)inLen : (chunkSize - ktInstance->queueAbsorbedLen);
         if (KeccakWidth1600_12rounds_SpongeAbsorb(&ktInstance->finalNode, input, len) != 0)
             return 1;
         input += len;
@@ -132,7 +156,7 @@ int KangarooTwelve_Update(KangarooTwelve_Instance *ktInstance, const unsigned ch
     }
     else if ( ktInstance->queueAbsorbedLen != 0 ) {
         /* There is data in the queue, absorb further in queue until block complete */
-        unsigned int len = (inLen < (chunkSize - ktInstance->queueAbsorbedLen)) ? inLen : (chunkSize - ktInstance->queueAbsorbedLen);
+        unsigned int len = (inLen < (chunkSize - ktInstance->queueAbsorbedLen)) ? (unsigned int)inLen : (chunkSize - ktInstance->queueAbsorbedLen);
         if (KeccakWidth1600_12rounds_SpongeAbsorb(&ktInstance->queueNode, input, len) != 0)
             return 1;
         input += len;
@@ -152,7 +176,9 @@ int KangarooTwelve_Update(KangarooTwelve_Instance *ktInstance, const unsigned ch
     }
 
     #if defined(KeccakP1600times8_implementation) && !defined(KeccakP1600times8_isFallback)
-    #if defined(KeccakP1600times8_12rounds_FastLoop_supported)
+    #if defined(KeccakP1600times8_K12ProcessLeaves_supported)
+    ProcessLeaves( 8 )
+    #elif defined(KeccakP1600times8_12rounds_FastLoop_supported)
     ParallelSpongeFastLoop( 8 )
     #else
     ParallelSpongeLoop( 8 )
@@ -160,7 +186,9 @@ int KangarooTwelve_Update(KangarooTwelve_Instance *ktInstance, const unsigned ch
     #endif
 
     #if defined(KeccakP1600times4_implementation) && !defined(KeccakP1600times4_isFallback)
-    #if defined(KeccakP1600times4_12rounds_FastLoop_supported)
+    #if defined(KeccakP1600times4_K12ProcessLeaves_supported)
+    ProcessLeaves( 4 )
+    #elif defined(KeccakP1600times4_12rounds_FastLoop_supported)
     ParallelSpongeFastLoop( 4 )
     #else
     ParallelSpongeLoop( 4 )
@@ -168,7 +196,9 @@ int KangarooTwelve_Update(KangarooTwelve_Instance *ktInstance, const unsigned ch
     #endif
 
     #if defined(KeccakP1600times2_implementation) && !defined(KeccakP1600times2_isFallback)
-    #if defined(KeccakP1600times2_12rounds_FastLoop_supported)
+    #if defined(KeccakP1600times2_K12ProcessLeaves_supported)
+    ProcessLeaves( 2 )
+    #elif defined(KeccakP1600times2_12rounds_FastLoop_supported)
     ParallelSpongeFastLoop( 2 )
     #else
     ParallelSpongeLoop( 2 )
@@ -176,7 +206,7 @@ int KangarooTwelve_Update(KangarooTwelve_Instance *ktInstance, const unsigned ch
     #endif
 
     while ( inLen > 0 ) {
-        unsigned int len = (inLen < chunkSize) ? inLen : chunkSize;
+        unsigned int len = (inLen < chunkSize) ? (unsigned int)inLen : chunkSize;
         if (KeccakWidth1600_12rounds_SpongeInitialize(&ktInstance->queueNode, rate, capacity) != 0)
             return 1;
         if (KeccakWidth1600_12rounds_SpongeAbsorb(&ktInstance->queueNode, input, len) != 0)

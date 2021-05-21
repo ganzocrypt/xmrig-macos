@@ -1,7 +1,12 @@
 /*
+The eXtended Keccak Code Package (XKCP)
+https://github.com/XKCP/XKCP
+
+KangarooTwelve, designed by Guido Bertoni, Joan Daemen, Michaël Peeters, Gilles Van Assche, Ronny Van Keer and Benoît Viguier.
+
 Implementation by Ronny Van Keer, hereby denoted as "the implementer".
 
-For more information, feedback or questions, please refer to our website:
+For more information, feedback or questions, please refer to the Keccak Team website:
 https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
@@ -12,7 +17,9 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifndef _KangarooTwelve_h_
 #define _KangarooTwelve_h_
 
-#ifndef KeccakP1600_excluded
+//#include "config.h"
+#define XKCP_has_KeccakP1600
+#ifdef XKCP_has_KeccakP1600
 
 #include <stddef.h>
 #include "align.h"
@@ -84,6 +91,8 @@ int KangarooTwelve_Final(KangarooTwelve_Instance *ktInstance, unsigned char *out
   */
 int KangarooTwelve_Squeeze(KangarooTwelve_Instance *ktInstance, unsigned char *output, size_t outputByteLen);
 
+#else
+#error This requires an implementation of Keccak-p[1600]
 #endif
 
 #endif
