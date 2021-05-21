@@ -46,6 +46,7 @@ extern "C" {
 	void randomx_program_loop_end();
 	void randomx_dataset_init();
 	void randomx_dataset_init_avx2_prologue();
+	void randomx_dataset_init_avx2_loop_begin();
 	void randomx_dataset_init_avx2_loop_end();
 	void randomx_dataset_init_avx2_epilogue();
 	void randomx_dataset_init_avx2_ssh_load();

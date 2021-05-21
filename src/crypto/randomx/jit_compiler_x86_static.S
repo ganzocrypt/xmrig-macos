@@ -54,6 +54,7 @@
 .global DECL(randomx_program_loop_end)
 .global DECL(randomx_dataset_init)
 .global DECL(randomx_dataset_init_avx2_prologue)
+.global DECL(randomx_dataset_init_avx2_loop_begin)
 .global DECL(randomx_dataset_init_avx2_loop_end)
 .global DECL(randomx_dataset_init_avx2_epilogue)
 .global DECL(randomx_dataset_init_avx2_ssh_load)
@@ -221,11 +222,11 @@ DECL(randomx_dataset_init_avx2_prologue):
 #endif
 	sub rsp, 40
 
-	jmp randomx_dataset_init_avx2_prologue_loop_begin
+	jmp DECL(randomx_dataset_init_avx2_loop_begin)
 	#include "asm/program_sshash_avx2_constants.inc"
 
 .balign 64
-randomx_dataset_init_avx2_prologue_loop_begin:
+DECL(randomx_dataset_init_avx2_loop_begin):
 	#include "asm/program_sshash_avx2_loop_begin.inc"
 
 	;# init integer registers (lane 0)

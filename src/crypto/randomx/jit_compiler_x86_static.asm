@@ -43,6 +43,7 @@ PUBLIC randomx_program_read_dataset_sshash_init
 PUBLIC randomx_program_read_dataset_sshash_fin
 PUBLIC randomx_dataset_init
 PUBLIC randomx_dataset_init_avx2_prologue
+PUBLIC randomx_dataset_init_avx2_loop_begin
 PUBLIC randomx_dataset_init_avx2_loop_end
 PUBLIC randomx_dataset_init_avx2_epilogue
 PUBLIC randomx_dataset_init_avx2_ssh_load
@@ -205,11 +206,12 @@ randomx_dataset_init_avx2_prologue PROC
 	push r9							;# max. block index
 	sub rsp, 40
 
-	jmp loop_begin
+	jmp randomx_dataset_init_avx2_loop_begin
 	include asm/program_sshash_avx2_constants.inc
 
 ALIGN 64
-loop_begin:
+randomx_dataset_init_avx2_loop_begin PROC
+randomx_dataset_init_avx2_loop_begin ENDP
 	include asm/program_sshash_avx2_loop_begin.inc
 
 	;# init integer registers (lane 0)
