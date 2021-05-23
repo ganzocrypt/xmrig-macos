@@ -93,7 +93,7 @@ namespace randomx {
 		context.flags = ARGON2_DEFAULT_FLAGS;
 		context.version = ARGON2_VERSION_NUMBER;
 
-		argon2_ctx_mem(&context, Argon2_d, cache->memory, RandomX_CurrentConfig.ArgonMemory * 1024);
+		argon2_ctx_mem(&context, Argon2_d, cache->memory, RandomX_CurrentConfig.ArgonMemory * randomx::ArgonBlockSize);
 
 		randomx::Blake2Generator gen(key, keySize);
 		for (uint32_t i = 0; i < RandomX_CurrentConfig.CacheAccesses; ++i) {

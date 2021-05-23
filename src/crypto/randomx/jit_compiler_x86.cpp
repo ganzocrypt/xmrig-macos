@@ -367,8 +367,7 @@ namespace randomx {
 			emit(codeDatasetInitAVX2LoopEnd, datasetInitAVX2LoopEndSize, code, codePos);
 
 			// Number of bytes from the start of randomx_dataset_init_avx2_prologue to loop_begin label
-			constexpr int32_t prologue_size = 140;
-			*(int32_t*)(code + codePos - 4) = prologue_size - codePos;
+			*(int32_t*)(code + codePos - 4) = RandomX_CurrentConfig.codeDatasetInitAVX2LoopBeginOffset - codePos;
 
 			emit(codeDatasetInitAVX2Epilogue, datasetInitAVX2EpilogueSize, code, codePos);
 			return;

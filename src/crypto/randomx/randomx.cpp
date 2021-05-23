@@ -301,22 +301,23 @@ void RandomX_ConfigurationBase::Apply()
 	std::cout << "\naRDLSIT:" << std::hex << (uint64_t)codeReadDatasetLightSshInitTweaked << "\n";
 	std::cout << "o67:" << std::hex << ((uint32_t*)(codeReadDatasetLightSshInitTweaked + 67))[0] << "\n";
 	std::cout << "\nAM:" << std::hex << ArgonMemory * 16 - 1 << "\n";
+	std::cout << "CLAMC:" << std::hex << CacheLineAlignMask_Calculated << "\n";
 	std::cout << "DBMC:" << std::hex << DatasetBaseMask_Calculated << "\n";
 	std::cout << "SLMC:" << std::hex << ScratchpadL3Mask64_Calculated << "\n";
 #	endif
 
 	*(uint32_t*)(codeSshPrefetchTweaked + 3) = ArgonMemory * 16 - 1;
-
-	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 34) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 54) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 78) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 103) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 128) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 11) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 36) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 62) = ArgonMemory * 16 - 1;
-	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 88) = ArgonMemory * 16 - 1;
 	*(uint32_t*)(codeSshInitTweaked + 7) = ArgonMemory * 16 - 1;
+
+	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 34) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 54) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 78) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 103) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset + 128) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 11) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 36) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 62) = CacheLineAlignMask_Calculated;
+	*(uint32_t*)(codeDatasetInitAVX2SshPrefetchTweaked + 88) = CacheLineAlignMask_Calculated;
 
 	*(uint32_t*)(codeReadDatasetTweaked + 4) = DatasetBaseMask_Calculated;
 	*(uint32_t*)(codeReadDatasetTweaked + 23) = DatasetBaseMask_Calculated;
