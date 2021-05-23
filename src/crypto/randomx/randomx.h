@@ -125,7 +125,7 @@ struct RandomX_ConfigurationBase
 
 	rx_vec_i128 fillAes4Rx4_Key[8];
 
-	uint8_t codePrefetchScratchpadTweaked[28]; //26
+	uint8_t codePrefetchScratchpadTweaked[28]; //25 BMI2 26 -BMI2
 	uint32_t codePrefetchScratchpadTweakedSize;
 	uint8_t codePrologueTweaked[132]; //129
 	uint8_t codeReadDatasetTweaked[68]; //66
