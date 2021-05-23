@@ -300,6 +300,9 @@ void RandomX_ConfigurationBase::Apply()
 	std::cout << "o23:" << std::hex << ((uint32_t*)(codeReadDatasetTweaked + 23))[0] << "\n";
 	std::cout << "\naRDLSIT:" << std::hex << (uint64_t)codeReadDatasetLightSshInitTweaked << "\n";
 	std::cout << "o67:" << std::hex << ((uint32_t*)(codeReadDatasetLightSshInitTweaked + 67))[0] << "\n";
+	std::cout << "\nAM:" << std::hex << ArgonMemory * 16 - 1 << "\n";
+	std::cout << "DBMC:" << std::hex << DatasetBaseMask_Calculated << "\n";
+	std::cout << "SLMC:" << std::hex << ScratchpadL3Mask64_Calculated << "\n";
 #	endif
 
 	*(uint32_t*)(codeSshPrefetchTweaked + 3) = ArgonMemory * 16 - 1;

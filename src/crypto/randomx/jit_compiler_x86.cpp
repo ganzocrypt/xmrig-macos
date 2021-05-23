@@ -120,6 +120,7 @@ namespace randomx {
 	#define codeReadDatasetLightSshFin ADDR(randomx_program_read_dataset_sshash_fin)
 	#define codeDatasetInit ADDR(randomx_dataset_init)
 	#define codeDatasetInitAVX2Prologue ADDR(randomx_dataset_init_avx2_prologue)
+	#define codeDatasetInitAVX2LoopBegin ADDR(randomx_dataset_init_avx2_loop_begin)
 	#define codeDatasetInitAVX2LoopEnd ADDR(randomx_dataset_init_avx2_loop_end)
 	#define codeDatasetInitAVX2Epilogue ADDR(randomx_dataset_init_avx2_epilogue)
 	#define codeDatasetInitAVX2SshLoad ADDR(randomx_dataset_init_avx2_ssh_load)
@@ -152,6 +153,7 @@ namespace randomx {
 	#define codeSshInitSize (codeProgramEnd - codeSshInit)
 
 	#define epilogueOffset ((CodeSize - epilogueSize) & ~63)
+	#define datasetInitAVX2PrologueLoopBeginOffset (codeDatasetInitAVX2LoopBegin - codeDatasetInitAVX2Prologue)
 
 	constexpr int32_t superScalarHashOffset = 32768;
 
@@ -365,7 +367,7 @@ namespace randomx {
 			emit(codeDatasetInitAVX2LoopEnd, datasetInitAVX2LoopEndSize, code, codePos);
 
 			// Number of bytes from the start of randomx_dataset_init_avx2_prologue to loop_begin label
-			constexpr int32_t prologue_size = 320;
+			constexpr int32_t prologue_size = 140;
 			*(int32_t*)(code + codePos - 4) = prologue_size - codePos;
 
 			emit(codeDatasetInitAVX2Epilogue, datasetInitAVX2EpilogueSize, code, codePos);
