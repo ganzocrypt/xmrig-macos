@@ -202,6 +202,7 @@ RandomX_ConfigurationBase::RandomX_ConfigurationBase()
 			codePrefetchScratchpadTweakedSize = b - a;
 		}
 #		if defined(APP_DEBUG) || defined(_MSC_VER)
+		std::cout << (xmrig::Cpu::info()->hasBMI2() ? "+" : "-") << "BMI2\n";
 		std::cout << "sPST(-BMI2):" << std::dec << (b - a) << "\n";
 		std::cout << "sPST(+BMI2):" << std::dec << (c - b) << "\n";
 #		endif
@@ -288,7 +289,7 @@ void RandomX_ConfigurationBase::Apply()
 #if defined(XMRIG_FEATURE_ASM) && (defined(_M_X64) || defined(__x86_64__))
 #	if defined(APP_DEBUG) || defined(_MSC_VER)
 	std::cout << "\n";
-	std::cout << "aIAPT:0x" << std::hex << (uint64_t)codeDatasetInitAVX2PrologueTweaked << "; oALB:0x" << codeDatasetInitAVX2LoopBeginOffset << "\n";
+	std::cout << "aIAPT:0x" << std::hex << (uint64_t)codeDatasetInitAVX2PrologueTweaked << "; oALB:" << std::dec << codeDatasetInitAVX2LoopBeginOffset << "\n";
 //	std::cout << " o34:0x" << std::hex << ((uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset +  34))[0] << "\n";
 //	std::cout << " o54:0x" << std::hex << ((uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset +  54))[0] << "\n";
 //	std::cout << " o78:0x" << std::hex << ((uint32_t*)(codeDatasetInitAVX2PrologueTweaked + codeDatasetInitAVX2LoopBeginOffset +  78))[0] << "\n";
