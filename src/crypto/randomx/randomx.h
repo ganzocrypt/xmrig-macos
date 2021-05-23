@@ -125,16 +125,16 @@ struct RandomX_ConfigurationBase
 
 	rx_vec_i128 fillAes4Rx4_Key[8];
 
-	uint8_t codePrefetchScratchpadTweaked[28]; //25 BMI2 26 -BMI2
+	uint8_t codePrefetchScratchpadTweaked[28];          //25 BMI2 26 -BMI2
 	uint32_t codePrefetchScratchpadTweakedSize;
-	uint8_t codePrologueTweaked[132]; //129
-	uint8_t codeReadDatasetTweaked[68]; //66
-	uint8_t codeReadDatasetLightSshInitTweaked[72]; //71
-	uint8_t codeDatasetInitAVX2PrologueTweaked[736]; //726
+	uint8_t codePrologueTweaked[132];                   //129
+	uint8_t codeReadDatasetTweaked[68];                 //66
+	uint8_t codeReadDatasetLightSshInitTweaked[72];     //71
+	uint8_t codeDatasetInitAVX2PrologueTweaked[736];    //726
 	uint32_t codeDatasetInitAVX2LoopBeginOffset;
-	uint8_t codeDatasetInitAVX2SshPrefetchTweaked[128]; //123
-	uint8_t codeSshPrefetchTweaked[20]; // 17
-	uint8_t codeSshInitTweaked[192]; //192
+	uint8_t codeDatasetInitAVX2SshPrefetchTweaked[128]; //123 lin 107 win
+	uint8_t codeSshPrefetchTweaked[20];                 // 17
+	uint8_t codeSshInitTweaked[192];                    //192
 
 	uint32_t AddressMask_Calculated[4];
 	uint32_t ScratchpadL3Mask_Calculated;
