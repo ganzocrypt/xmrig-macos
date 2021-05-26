@@ -31,6 +31,7 @@ The preferred way to configure the miner is the [JSON config file](https://xmrig
 ## Developers
 * **[xmrig](https://github.com/xmrig)**
 * **[sech1](https://github.com/SChernykh)**
+* **[Spudz76](https://github.com/Spudz76)** OpenCL AMD development
 
 ## Contacts
 * support@xmrig.com
