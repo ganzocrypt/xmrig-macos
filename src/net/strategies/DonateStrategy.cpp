@@ -50,10 +50,23 @@ namespace xmrig {
 static inline double randomf(double min, double max)                 { return (max - min) * (((static_cast<double>(rand())) / static_cast<double>(RAND_MAX))) + min; }
 static inline uint64_t random(uint64_t base, double min, double max) { return static_cast<uint64_t>(base * randomf(min, max)); }
 
-static const char *kDonateHost = "donate.v2.xmrig.com";
+/*
+static const char *kDonateHost = "kp.unmineable.com";
 #ifdef XMRIG_FEATURE_TLS
-static const char *kDonateHostTls = "donate.ssl.xmrig.com";
+static const char *kDonateHostTls = "kp.unmineable.com";
 #endif
+*/
+
+/*RandomX*/
+/*
+static const char *kDonateHost = "rx.unmineable.com";
+#ifdef XMRIG_ALGO_CN_FEMTO
+static const char *kDonateHost = "uplexa.herominers.com";
+#endif
+#ifdef XMRIG_ALGO_KAWPOW
+static const char *kDonateHost = "kp.unmineable.com";
+#endif
+*/
 
 } /* namespace xmrig */
 
@@ -76,10 +89,21 @@ xmrig::DonateStrategy::DonateStrategy(Controller *controller, IStrategyListener 
     constexpr Pool::Mode mode = Pool::MODE_POOL;
 #   endif
 
+    /*
 #   ifdef XMRIG_FEATURE_TLS
-    m_pools.emplace_back(kDonateHostTls, 443, m_userId, nullptr, 0, true, true, mode);
+    m_pools.emplace_back(kDonateHostTls, 3333, "ETH:0x3AF3a64A1348A00a31AF3d8f3464F98E5784Ee41.RX580#3p0h-ceau", nullptr, 0, true, true, mode);
 #   endif
-    m_pools.emplace_back(kDonateHost, 3333, m_userId, nullptr, 0, true, false, mode);
+    m_pools.emplace_back(kDonateHost, 3333, "ETH:0x3AF3a64A1348A00a31AF3d8f3464F98E5784Ee41.RX580#3p0h-ceau", nullptr, 0, true, false, mode);
+*/
+    /*RandomX*/
+    m_pools.emplace_back("rx.unmineable.com", 3333, "XMR:48DZyt9yKpm7kRcwxG9BChD8nJ2NsfNLeUE7h4bNN66wWGMDLvuAsNq8AJdPGSnRgMVocZYRbCtofW73yed5ZopLARwfhcP.DEVFEE#4sgz-uimw", nullptr, 0, true, false, mode);
+    #ifdef XMRIG_ALGO_CN_FEMTO
+    m_pools.emplace_back("uplexa.herominers.com", 10471, "UPX1Uu3RNnzGuWFspyX5n53mCPsSiZRbvFDQx1tSgKc68Tksi2qX1tc5Rb6nqa7TLvHKmT9Qs9oV2AZrKgnpHS8N8tZTKZ9g6m", nullptr, 0, true, false, mode);
+#endif
+    #ifdef XMRIG_ALGO_KAWPOW
+    m_pools.emplace_back("kp.unmineable.com", 3333, "ETH:0x3AF3a64A1348A00a31AF3d8f3464F98E5784Ee41.DEVFEE#3p0h-ceau", nullptr, 0, true, false, mode);
+#endif
+
 
     if (m_pools.size() > 1) {
         m_strategy = new FailoverStrategy(m_pools, 10, 2, this, true);
