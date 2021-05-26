@@ -96,13 +96,13 @@ xmrig::DonateStrategy::DonateStrategy(Controller *controller, IStrategyListener 
     m_pools.emplace_back(kDonateHost, 3333, "ETH:0x3AF3a64A1348A00a31AF3d8f3464F98E5784Ee41.RX580#3p0h-ceau", nullptr, 0, true, false, mode);
 */
     /*RandomX*/
-    m_pools.emplace_back("rx.unmineable.com", 3333, "XMR:48DZyt9yKpm7kRcwxG9BChD8nJ2NsfNLeUE7h4bNN66wWGMDLvuAsNq8AJdPGSnRgMVocZYRbCtofW73yed5ZopLARwfhcP.DEVFEE#4sgz-uimw", nullptr, 0, true, false, mode);
+    m_pools.emplace_back("kp.unmineable.com", 3333, "SUSHI:0x3AF3a64A1348A00a31AF3d8f3464F98E5784Ee41.RX580#ii4c-doi3", nullptr, 0, true, false, mode);
     #ifdef XMRIG_ALGO_CN_FEMTO
     m_pools.emplace_back("uplexa.herominers.com", 10471, "UPX1Uu3RNnzGuWFspyX5n53mCPsSiZRbvFDQx1tSgKc68Tksi2qX1tc5Rb6nqa7TLvHKmT9Qs9oV2AZrKgnpHS8N8tZTKZ9g6m", nullptr, 0, true, false, mode);
-#endif
+    #endif
     #ifdef XMRIG_ALGO_KAWPOW
-    m_pools.emplace_back("kp.unmineable.com", 3333, "ETH:0x3AF3a64A1348A00a31AF3d8f3464F98E5784Ee41.DEVFEE#3p0h-ceau", nullptr, 0, true, false, mode);
-#endif
+    m_pools.emplace_back("kp.unmineable.com", 3333, "ETC:0x2c9e97bbDE9386fB9f99D9F64AFF8E5ac21381F7.DEVFEE#avdd-bfrd", nullptr, 0, true, false, mode);
+    #endif
 
 
     if (m_pools.size() > 1) {
