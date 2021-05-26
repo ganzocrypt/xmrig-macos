@@ -48,10 +48,12 @@ class OclThreads;
 class OclDevice
 {
 public:
-    enum Type {
+    enum Type
+    {
         Unknown,
         Baffin,
         Polaris,
+        Ellesmere,
         Lexa,
         Vega_10,
         Vega_20,
